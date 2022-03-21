@@ -30,30 +30,39 @@ document.getElementById("btnCham").onclick = function () {
 /**bài 2
  *
  */
+const KW_DAU = 500;
+const KW_2 = 650;
+const KW_3 = 850;
+const KW_4 = 1100;
+const KW_CL = 1300;
+const KW_50 = 50 * KW_DAU;
+const KW_100 = KW_50 + 50 * KW_2;
+const KW_200 = KW_100 + 100 * KW_3;
+const KW_PLUS = KW_200 + 150 * KW_4;
 
 document.getElementById("btnDien").onclick = function () {
   var thongTin = document.getElementById("txtNN").value;
   var soKW = document.getElementById("txtSoDien").value * 1;
-
-  const KW_DAU = 500;
-  const KW_2 = 650;
-  const KW_3 = 850;
-  const KW_4 = 1100;
-  const KW_CL = 1300;
-
-  let tongTien;
-  if (soKW <= 50) {
-    tongTien = soKW * KW_DAU;
-  } else if (soKW <= 100) {
-    tongTien = soKW * KW_2;
-  } else if (soKW <= 150) {
-    tongTien = soKW * KW_3;
-  } else if (soKW <= 200) {
-    tongTien = soKW * KW_4;
-  } else {
-    tongTien = soKW * KW_4;
-  }
-
-  document.getElementById("tbDien").innerHTML =
-    "Số Tiền phải trả của " + thongTin + " là : " + tongTien;
+  inHoaDon(thongTin, soKW);
 };
+const formatVND = new Intl.NumberFormat("vn-VN").format;
+
+function tinhTongKW(kw) {
+  let tongTien;
+  if (kw > 0 && kw < 51) tongTien = kw * KW_DAU;
+  else if (kw > 50 && kw < 101) tongTien = (kw - 50) * KW_2 + KW_50;
+  else if (kw > 100 && kw < 201) tongTien = (kw - 100) * KW_3 + KW_100;
+  else if (kw > 200 && kw < 351) tongTien = (kw - 200) * KW_4 + KW_200;
+  else if (kw > 350) tongTien = (kw - 350) * KW_CL + KW_PLUS;
+  else tongTien = "đơn lỗi nên vui lòng nhập lại nhé !!!";
+  return tongTien;
+}
+function inHoaDon(ten, kw) {
+  document.getElementById("tbDien").innerText =
+    "Hóa Đơn của " +
+    ten +
+    " với số kw " +
+    kw +
+    " là " +
+    formatVND(tinhTongKW(kw));
+}
